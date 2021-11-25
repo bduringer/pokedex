@@ -19,6 +19,12 @@
         {{game.version.name}}
       </div>
     </div> 
+    <div>
+      <h2>Evoluções</h2>
+      <div v-for='evolution in evolutions'>
+        {{evolution}}
+      </div>
+    </div> 
   </div>
 </template>
 
@@ -30,14 +36,28 @@ export default {
       pokemon: {
         sprites: {},
         moves: [],
-      }
+      },
+      evolutions: [],
+    }
+  },
+
+  methods: {
+    getEvolutions () {
+      fetch(this.pokemon.species.url).then(res => res.json()).then(species => {
+        fetch(species.evolution_chain.url).then(res => res.json()).then(evolutionChain => {
+          this.evolutions = [species.name, ...this.nextEvolutions(evolutionChain.chain)]
+        })
+      })
+    },
+    nextEvolutions (chain)  {
+      return chain.evolves_to.reduce((memo, evolution) => [...memo, evolution.species.name, ...this.nextEvolutions(evolution)], [])
     }
   },
   
   created () {
     fetch('https://pokeapi.co/api/v2/pokemon/' + this.$route.params.id).then(res => res.json()).then(data => {
       this.pokemon = data
-      console.log(this.pokemon)
+      this.getEvolutions()
     })
   },
 }
