@@ -21,16 +21,16 @@
 export default {
   computed: {
     filteredPokemons () {
-      return this.pokemons.filter(pokemon => {
+      return this.pokemons//.filter(pokemon => {
        // var id = pokemon.url.match(/\/(\d+)/)[1]
-        return (
+        //return (
           // Obs: Aqui tentei fazer um filtro, mas não consegui :(
           // pokemon.name.search(this.filters.name) >= 0 &&
           // pokemon.types.reduce((memo, type) => memo || type.type.name.search(this.filters.type) >= 0, false) && 
           // (!this.filters.id || id == this.filters.id)
-          true
-        )
-      })
+        //   true
+        // )
+      //})
     }
   },
   data () {
